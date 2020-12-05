@@ -1,40 +1,76 @@
 package ua.edu.ucu.autocomplete;
 
 import ua.edu.ucu.tries.Trie;
+import ua.edu.ucu.tries.Tuple;
+
+import java.util.*;
 
 /**
- *
  * @author andrii
  */
 public class PrefixMatches {
 
-    private Trie trie;
+    private final Trie trie;
 
     public PrefixMatches(Trie trie) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.trie = trie;
     }
 
     public int load(String... strings) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        int wordCount = 0;
+        for (String string : strings) {
+            String[] wordsArr = string.split(" ");
+            for (String word : wordsArr) {
+                if (word.length() > 2) {
+                    trie.add(new Tuple(word, word.length()));
+                    wordCount++;
+                }
+            }
+        }
+        return wordCount;
+    }
+
+    public void checkPrefix(String pref) {
+        if (pref.length() < 2) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public boolean contains(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.contains(word);
     }
 
     public boolean delete(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.delete(word);
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        checkPrefix(pref);
+        return trie.wordsWithPrefix(pref);
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        checkPrefix(pref);
+        List<String> result = new ArrayList<String>((Collection) trie.wordsWithPrefix(pref));
+        result.sort(Comparator.comparingInt(String::length));
+        ArrayList<String> resultWithKLength = new ArrayList<>();
+        int differentlengthCount = 0;
+        int currLength = 0;
+
+        for (String s : result) {
+            if (s.length() != currLength) {
+                currLength = s.length();
+                differentlengthCount++;
+            }
+            if (differentlengthCount > k) {
+                break;
+            }
+            resultWithKLength.add(s);
+        }
+        return resultWithKLength;
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.size();
     }
 }
