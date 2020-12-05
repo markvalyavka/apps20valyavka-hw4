@@ -51,9 +51,20 @@ public class PrefixMatches {
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
         checkPrefix(pref);
-        List<String> result = new ArrayList<String>((Collection) trie.wordsWithPrefix(pref));
+
+        // Store all words with specific prefix in a list
+        List<String> result = new ArrayList<String>();
+        for (String str : trie.wordsWithPrefix(pref)) {
+            result.add(str);
+        }
+
+        // Sort list by string length
         result.sort(Comparator.comparingInt(String::length));
         ArrayList<String> resultWithKLength = new ArrayList<>();
+
+        // We are allowed to store only k different string lengths,
+        // So we keep track when string length changes and if number
+        // of changes exceeds k, we can break and return the result
         int differentlengthCount = 0;
         int currLength = 0;
 

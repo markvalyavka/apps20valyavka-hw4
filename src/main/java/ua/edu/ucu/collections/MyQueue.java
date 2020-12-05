@@ -1,6 +1,8 @@
 package ua.edu.ucu.collections;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MyQueue {
     private ImmutableLinkedList underlyingArray;
@@ -15,7 +17,6 @@ public class MyQueue {
 
     public void enqueue(Object e) {
         underlyingArray = underlyingArray.addLast(e);
-        System.out.println(underlyingArray);
     }
 
     public Object dequeue() {
@@ -26,6 +27,25 @@ public class MyQueue {
 
     public Object peek() {
         return underlyingArray.getFirst();
+    }
+
+    public <T> Iterator<T> iterator() {
+
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return !underlyingArray.isEmpty();
+            }
+
+            @Override
+            public T next() {
+                if (underlyingArray.isEmpty()) {
+                    throw new NoSuchElementException();
+                }
+
+                return (T) dequeue();
+            }
+        };
     }
 
     @Override

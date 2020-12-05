@@ -137,7 +137,6 @@ public class ImmutableLinkedList implements ImmutableList {
             curr = curr.next;
             index += 1;
         }
-        System.out.println(Arrays.toString(Arrays.stream(array).toArray()));
         return array;
     }
 
@@ -167,6 +166,6 @@ public class ImmutableLinkedList implements ImmutableList {
 
     @Override
     public String toString() {
-        return "ImmutableLinkedList(" + Arrays.toString(Arrays.stream(toArray()).toArray()) + ")";
+        return "ImmutableLinkedList(" + Arrays.toString(toArray()) + ")";
     }
 }

@@ -2,8 +2,7 @@ package ua.edu.ucu.tries;
 
 import ua.edu.ucu.collections.MyQueue;
 
-import java.util.PriorityQueue;
-
+// Implementation taken from Algorithms 4th edition by R.Sedgewick
 public class RWayTrie implements Trie {
 
     private static int R = 256;
@@ -44,9 +43,9 @@ public class RWayTrie implements Trie {
     }
 
     private void collect(Node x, String pre,
-                         PriorityQueue q) {
+                         MyQueue q) {
         if (x == null) return;
-        if (x.val != null) q.add(pre);
+        if (x.val != null) q.enqueue(pre);
         for (char c = 0; c < R; c++)
             collect(x.next[c], pre + c, q);
     }
@@ -95,9 +94,9 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> wordsWithPrefix(String s) {
-        PriorityQueue queue = new PriorityQueue();
+        MyQueue queue = new MyQueue();
         collect(get(root, s, 0), s, queue);
-        return (Iterable<String>) queue;
+        return queue::iterator;
     }
 
     @Override
